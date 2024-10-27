@@ -235,27 +235,33 @@ fn AddRecipe() -> Element {
 
 #[component]
 fn AddPantryItem() -> Element {
-    //let mut foods = use_signal(|| Vec::new());
-    let mut test = use_signal(|| String::new());
-
-    let mut foods = Vec::new();
-
-    let mut index:usize = 0;
+    let mut foods = use_signal(|| Vec::new());
+    let mut index = use_signal(|| 0);
 
     use_effect(move || {
-        let f = get_foods().expect(""); 
-        foods = f;
+        foods.set(get_foods().expect(""));
     });
 
     rsx! {
         select {
-            onchange: move |event| { index = event.value().clone().parse::<usize>().expect("");  },
+            onchange: move |event| { index.set(event.value().parse().expect("")); },
             { foods.iter().enumerate().map(|(i, food)| {
-                let id = i as f64;
-                rsx! { option { value: id, "{food.name}" }, }
+                rsx! { option { value: i as f64, "{food.name}" }, }
             }) }
         }
-        
+
+        br{}
+
+        {
+            foods.with(|foods| {
+                if let Some(food) = foods.get(index()) {
+                    format!("Selected food: {}", food.name)
+                } else {
+                    "No food selected".to_string()
+                }
+            })
+        }
+
     }
 }
 
