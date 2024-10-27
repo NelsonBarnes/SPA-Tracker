@@ -1,0 +1,18 @@
+.navbar ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+
+.navbar li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+}
+
+body {
+    padding-left: 10px;
+}
